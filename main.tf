@@ -20,3 +20,17 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
   tags = merge(var.tags, { Name = "${var.env}-igw" })
 }
+resource "aws_eip" "ngw" {
+  count = lookup(lookup(var.subnets,"public" , null ), "cidr_block",0)
+  vpc = true
+  tags = merge(var.tags, { Name = "${var.env}-ngw" })
+}
+#resource "aws_nat_gateway" "ngw" {
+#  allocation_id = ""
+#  subnet_id = ""
+#
+#  tags = {
+#    Name = ""
+#  }
+#  depends_on = []
+#}
